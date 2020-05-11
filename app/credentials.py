@@ -8,7 +8,7 @@ class Credentials(object):
     def __init__(self):
         self.credentials = None
         # If modifying these scopes, delete the file token.pickle.
-        self.SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+        self.SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/spreadsheets']
 
     def load(self):
         creds = None
