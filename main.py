@@ -9,6 +9,9 @@ import csv
 
 from app.credentials import Credentials
 from app.gmail import GmailApi
+from os import getcwd
+
+resources_path = getcwd() + '/resources/'
 
 def main():
     """Shows basic usage of the Gmail API.
@@ -26,21 +29,21 @@ def main():
 
     # download the zip file
     download_response = requests.get(download_link)
-    zip_name = 'downloaded.zip'
-    with open(zip_name, 'wb+') as myzip:
+    zip_path = resources_path + 'downloaded.zip'
+    with open(zip_path, 'wb+') as myzip:
         myzip.write(download_response.content)
 
     # get the csv from the zip
     csv_name = ''
     csv_content = None
 
-    with ZipFile(zip_name) as z_file:
+    with ZipFile(zip_path) as z_file:
         csv_name = z_file.namelist()[0]
         # not the safest way to format data
         csv_content = str(z_file.read(csv_name), 'utf-8').replace('"', '')
 
     # this file is currenlty unused
-    with open('read_zip_data.csv', 'w') as f:
+    with open(resources_path + 'read_zip_data.csv', 'w') as f:
         f.write(csv_content)
 
 
