@@ -1,6 +1,5 @@
 
 from __future__ import print_function
-from googleapiclient.discovery import build
 import base64
 import requests
 from zipfile import ZipFile
@@ -14,9 +13,6 @@ from os import getcwd
 resources_path = getcwd() + '/resources/'
 
 def main():
-    """Shows basic usage of the Gmail API.
-    Lists the user's Gmail labels.
-    """
     creds = Credentials().get()
 
     message_body = GmailApi(creds).build_service().get_latest_message_body()
@@ -50,7 +46,7 @@ def main():
     formatted_reporting_data = [x.split(',') for x in content_as_list]
 
 
-    updated_spreadsheet = SheetsApi(creds, SpreadsheetMetadata()).build().write_to_spreadsheet(formatted_reporting_data)
+    updated_spreadsheet = SheetsApi(creds, SpreadsheetMetadata()).build_service().write_to_spreadsheet(formatted_reporting_data)
 
     print("main.py successfully completed")
 

@@ -8,7 +8,7 @@ class SheetsApi(object):
         self.sheet = None
         self.metadata = metadata
 
-    def build(self):
+    def build_service(self):
         self.service = build('sheets', 'v4', credentials=self.credentials)
         return self
 
@@ -43,3 +43,7 @@ class SpreadsheetMetadata(object):
 
     def get_range(self):
         return self.range
+
+
+if __name__ == '__main__':
+    main()
