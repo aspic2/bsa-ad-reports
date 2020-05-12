@@ -1,13 +1,14 @@
+
 from __future__ import print_function
 from googleapiclient.discovery import build
 import base64
-import email
+
 import requests
 from zipfile import ZipFile
 import csv
 
 from app.credentials import Credentials
-
+from app.gmail import GmailApi
 
 def main():
     """Shows basic usage of the Gmail API.
@@ -15,19 +16,10 @@ def main():
     """
     creds = Credentials().get()
 
-    gmail_service = build('gmail', 'v1', credentials=creds)
-
-    # Retrieve latest Adobe email
-    gmail_response = gmail_service.users().threads().list(userId='me', q="label:reports subject:Adobe_BSA ").execute()
-    latest_thread = gmail_response.get('threads')[0]
-    latest_thread_id = latest_thread.get('id')
-    message = gmail_service.users().messages().get(userId='me', id=latest_thread.get('id')).execute()
-
-    # return body of email only
-    body = message.get('payload').get('body').get('data')
+    message_body = GmailApi(creds).build_service().get_latest_message_body()
 
     # this is a bytes-like object and needs to be a string
-    lines = base64.urlsafe_b64decode(body.encode('ASCII'))
+    lines = base64.urlsafe_b64decode(message_body.encode('ASCII'))
     lines = str(lines, 'utf-8').split('\r\n')
 
     download_link = [line for line in lines if "https://download.flashtalking.com" in line][0]
@@ -49,9 +41,7 @@ def main():
 
     # this file is currenlty unused
     with open('read_zip_data.csv', 'w') as f:
-        csv_writer = csv.writer(f, delimiter=",")
-        for row in csv_content:
-            csv_writer.writerow(row)
+        f.write(csv_content)
 
 
     # write the CSV to the appropriate spreadsheet
@@ -72,6 +62,8 @@ def main():
         "values": list_of_lists
     }
     sheets_service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=spreadsheet_range, valueInputOption='USER_ENTERED', body=value_range_body).execute()
+
+    print("main.py successfully completed")
 
 if __name__ == '__main__':
     main()
