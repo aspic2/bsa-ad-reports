@@ -21,3 +21,6 @@ class GmailApi(object):
         # return body of email only
         body = message.get('payload').get('body').get('data')
         return body
+
+if __name__ == '__main__':
+    main()
