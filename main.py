@@ -8,6 +8,7 @@ import csv
 
 from app.credentials import Credentials
 from app.gmail import GmailApi
+from app.sheets import SheetsApi, SpreadsheetMetadata
 from os import getcwd
 
 resources_path = getcwd() + '/resources/'
@@ -45,25 +46,11 @@ def main():
     with open(resources_path + 'read_zip_data.csv', 'w') as f:
         f.write(csv_content)
 
-
-    # write the CSV to the appropriate spreadsheet
-    spreadsheet_id = '1HCuPDapimvZNf3W9uBQOJJuHGQ_xLxFwakBlDvYv6bc'
-    spreadsheet_range = 'import_flashtalking!A1:Z'
-    sheets_service = build('sheets', 'v4', credentials=creds)
-    sheets_response = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
-    # clear current data
-    sheets_service.spreadsheets().values().clear(spreadsheetId=spreadsheet_id, range=spreadsheet_range).execute()
-
-    # write new data
     content_as_list = csv_content.split("\n")
-    list_of_lists = [x.split(',') for x in content_as_list]
+    formatted_reporting_data = [x.split(',') for x in content_as_list]
 
-    value_range_body = {
-        "range": spreadsheet_range,
-        "majorDimension": "ROWS",
-        "values": list_of_lists
-    }
-    sheets_service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=spreadsheet_range, valueInputOption='USER_ENTERED', body=value_range_body).execute()
+
+    updated_spreadsheet = SheetsApi(creds, SpreadsheetMetadata()).build().write_to_spreadsheet(formatted_reporting_data)
 
     print("main.py successfully completed")
 
