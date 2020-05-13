@@ -8,20 +8,15 @@ import csv
 from app.credentials import Credentials
 from app.gmail import GmailApi
 from app.sheets import SheetsApi, SpreadsheetMetadata
+from app.reader import Reader
 from os import getcwd
 
 resources_path = getcwd() + '/resources/'
 
 def main():
     creds = Credentials().get()
-
     message_body = GmailApi(creds).build_service().get_latest_message_body()
-
-    # this is a bytes-like object and needs to be a string
-    lines = base64.urlsafe_b64decode(message_body.encode('ASCII'))
-    lines = str(lines, 'utf-8').split('\r\n')
-
-    download_link = [line for line in lines if "https://download.flashtalking.com" in line][0]
+    download_link = Reader(message_body).get_download_link()
 
     # download the zip file
     download_response = requests.get(download_link)
