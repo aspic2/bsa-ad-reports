@@ -5,7 +5,7 @@ from app.credentials import Credentials
 from app.gmail import GmailApi
 from app.sheets import SheetsApi, SpreadsheetMetadata
 from app.reader import Reader, FileManager, ZipFileManager
-from os import getcwd
+
 
 def main():
     credentials = Credentials().get()
