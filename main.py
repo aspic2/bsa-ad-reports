@@ -1,47 +1,26 @@
 
-from __future__ import print_function
-import base64
 import requests
-from zipfile import ZipFile
-import csv
 
 from app.credentials import Credentials
 from app.gmail import GmailApi
 from app.sheets import SheetsApi, SpreadsheetMetadata
-from app.reader import Reader
+from app.reader import Reader, FileManager, ZipFileManager
 from os import getcwd
 
-resources_path = getcwd() + '/resources/'
-
 def main():
-    creds = Credentials().get()
-    message_body = GmailApi(creds).build_service().get_latest_message_body()
-    download_link = Reader(message_body).get_download_link()
+    credentials = Credentials().get()
+    email_body = GmailApi(credentials).build_service().get_latest_message_body()
+    download_link = Reader(email_body).get_download_link()
 
     # download the zip file
     download_response = requests.get(download_link)
-    zip_path = resources_path + 'downloaded.zip'
-    with open(zip_path, 'wb+') as myzip:
-        myzip.write(download_response.content)
+    zip_file = ZipFileManager("downloaded.zip").write_content(download_response.content)
+    report_csv = zip_file.read_first_file().return_content_as_stripped_string()
+    report_csv_file = FileManager("report.csv").write_content(report_csv)
 
-    # get the csv from the zip
-    csv_name = ''
-    csv_content = None
+    formatted_reporting_data = [data.split(',') for data in Reader(report_csv).return_content_as_list()]
 
-    with ZipFile(zip_path) as z_file:
-        csv_name = z_file.namelist()[0]
-        # not the safest way to format data
-        csv_content = str(z_file.read(csv_name), 'utf-8').replace('"', '')
-
-    # this file is currenlty unused
-    with open(resources_path + 'read_zip_data.csv', 'w') as f:
-        f.write(csv_content)
-
-    content_as_list = csv_content.split("\n")
-    formatted_reporting_data = [x.split(',') for x in content_as_list]
-
-
-    updated_spreadsheet = SheetsApi(creds, SpreadsheetMetadata()).build_service().write_to_spreadsheet(formatted_reporting_data)
+    updated_spreadsheet = SheetsApi(credentials, SpreadsheetMetadata()).build_service().write_to_spreadsheet(formatted_reporting_data)
 
     print("main.py successfully completed")
 
