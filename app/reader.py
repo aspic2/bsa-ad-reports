@@ -23,6 +23,7 @@ class Reader(object):
     def get_download_link(self):
         self.decode_content()
         content_list = self.return_content_as_list('\r\n')
+        # TODO:  move this URL to a central location
         return [line for line in content_list if "https://download.flashtalking.com" in line][0]
 
     def return_content_as_stripped_string(self, stripped_character='"'):
@@ -34,7 +35,7 @@ class FileManager(object):
 
     def __init__(self, filename=None, write_mode='w'):
         self.filename = filename
-        self.filepath = getcwd() + '/resources/' + self.filename
+        self.filepath = getcwd() + '/reports/' + self.filename
         self.write_mode = write_mode
 
     def write_content(self, content):

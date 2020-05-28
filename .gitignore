@@ -3,7 +3,7 @@ credentials.json
 token.pickle
 
 # Intermediary files
-resources/
+reports/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
