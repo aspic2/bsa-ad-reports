@@ -1,6 +1,6 @@
-
 import requests
 
+from resources.bsa_api_keys import bsa_api_keys
 from app.credentials import Credentials
 from app.gmail import GmailApi
 from app.sheets import SheetsApi, SpreadsheetMetadata
@@ -22,6 +22,7 @@ def main():
     updated_spreadsheet = SheetsApi(credentials, SpreadsheetMetadata()).build_service().write_to_spreadsheet(formatted_reporting_data)
 
     print("main.py successfully completed")
+
 
 if __name__ == '__main__':
     main()
