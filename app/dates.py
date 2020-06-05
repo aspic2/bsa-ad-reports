@@ -33,7 +33,8 @@ class Dates(object):
         self.start_date = self.end_date-timedelta(6)
         return self
 
-    def set_dates(self, slack_weelyk=False):
+    def set_dates(self, slack_weekly=False):
+        # TODO: Is there a better way to handle this?
         if slack_weekly:
             self.set_end_date_to_last_wednesday()
             self.set_start_date_to_one_week_prior()
