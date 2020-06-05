@@ -40,14 +40,14 @@ class API(object):
 
 
 class LineItems(API):
-    def __init__(self):
-        API.__init__(self)
+    def __init__(self, advertiser):
+        API.__init__(self, advertiser)
         self.url_appendix = "lineitems"
 
 
 class DailyStats(API):
-    def __init__(self, dates):
-        API.__init__(self)
+    def __init__(self, advertiser, dates):
+        API.__init__(self, advertiser)
         self.url_appendix = "daily-stats"
         self.startDate = dates.get_start_date()
         self.endDate = dates.get_end_date()
