@@ -11,7 +11,6 @@ def first_party_reports():
     dates = Dates().set()
     data = DailyStatsApi(advertiser).set_dates(dates).get_json_response()
     print("Advertiser = {}".format(advertiser))
-    #print(data)
     formatted_data = None
     if data:
         formatted_data = list({"lineitem_name": d.get("lineitem_name"),
@@ -19,15 +18,14 @@ def first_party_reports():
                                 "impressions": d.get("impressions"),
                                 "clicks": d.get("clicks")
                                 } for d in data)
+        # TODO: Reduce the daily breakdown into single line items with total clicks and impressions
         with open(getcwd() + "/reports/month_to_date_data.csv", "w") as f:
             writer = csv.DictWriter(f, fieldnames=list(formatted_data[0].keys()), extrasaction='ignore')
             writer.writeheader()
             for row in formatted_data:
                 writer.writerow(row)
     print("finished")
-
-def reduce_dates(formatted_data):
-
+    
 
 if __name__ == '__main__':
     first_party_reports()
