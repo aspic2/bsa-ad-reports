@@ -44,13 +44,13 @@ class API(object):
 
 
 
-class LineItems(API):
+class LineItemsApi(API):
     def __init__(self, advertiser):
         API.__init__(self, advertiser)
         self.url_appendix = "lineitems"
 
 
-class DailyStats(API):
+class DailyStatsApi(API):
     def __init__(self, advertiser):
         API.__init__(self, advertiser)
         self.url_appendix = "daily-stats"

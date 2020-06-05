@@ -1,6 +1,6 @@
 from resources.bsa_api_keys import bsa_api_keys
 
-from app.bsa_api_connections import LineItems, DailyStats
+from app.bsa_api_connections import LineItemsApi, DailyStatsApi
 from app.dates import Dates
 import random
 from os import getcwd
@@ -9,7 +9,7 @@ import csv
 def first_party_reports():
     advertiser = random.choice(list(bsa_api_keys.keys()))
     dates = Dates().set()
-    data = DailyStats(advertiser).set_dates(dates).get_json_response()
+    data = DailyStatsApi(advertiser).set_dates(dates).get_json_response()
     print("Advertiser = {}".format(advertiser))
     #print(data)
     formatted_data = None
@@ -25,6 +25,8 @@ def first_party_reports():
             for row in formatted_data:
                 writer.writerow(row)
     print("finished")
+
+def reduce_dates(formatted_data):
 
 
 if __name__ == '__main__':
