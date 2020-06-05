@@ -9,7 +9,6 @@ class Dates(object):
         self.start_date = self.today -timedelta(6)
 
     def set_end_date_to_last_wednesday(self):
-        # week is set to end on a wednesday
         dates = list((self.today-timedelta(x)) for x in range(14))
         last_wednesday = max(filter(lambda x : x.weekday() == 2, dates))
         self.end_date = last_wednesday
@@ -34,8 +33,12 @@ class Dates(object):
         self.start_date = self.end_date-timedelta(6)
         return self
 
-    def set_dates(self):
-        self.set_end_date().set_start_date()
+    def set_dates(self, slack_weelyk=False):
+        if slack_weekly:
+            self.set_end_date_to_last_wednesday()
+            self.set_start_date_to_one_week_prior()
+        else:
+            self.set_dates_to_current_month()
         return self
 
     def get_start_date(self):
