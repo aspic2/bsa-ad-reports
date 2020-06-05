@@ -4,18 +4,33 @@ from datetime import date, timedelta
 class Dates(object):
 
     def __init__(self):
-        self.start_date = date.today()-timedelta(6)
-        self.end_date = date.today()
+        self.today = date.today()
+        self.end_date = self.today
+        self.start_date = self.today -timedelta(6)
 
-    def set_end_date(self):
+    def set_end_date_to_last_wednesday(self):
         # week is set to end on a wednesday
-        today = date.today()
-        dates = list((date.today()-timedelta(x)) for x in range(14))
+        dates = list((self.today-timedelta(x)) for x in range(14))
         last_wednesday = max(filter(lambda x : x.weekday() == 2, dates))
         self.end_date = last_wednesday
         return self
 
+    def set_end_date(self):
+        # set to last full day of data
+        self.end_date = self.today - timedelta(1)
+        return self
+
+    def set_dates_to_current_month(self):
+        self.set_end_date()
+        self.set_start_date()
+        return self
+
     def set_start_date(self):
+        # default to first of month
+        self.start_date = self.end_date.replace(day=1)
+        return self
+
+    def set_start_date_to_one_week_prior(self):
         self.start_date = self.end_date-timedelta(6)
         return self
 
