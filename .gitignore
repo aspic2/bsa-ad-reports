@@ -1,6 +1,7 @@
 # Sensitive info
 credentials.json
 token.pickle
+resources/sample*
 
 # Intermediary files
 reports/
