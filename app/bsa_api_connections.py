@@ -51,7 +51,7 @@ class LineItems(API):
 
 
 class DailyStats(API):
-    def __init__(self, advertiser, dates):
+    def __init__(self, advertiser):
         API.__init__(self, advertiser)
         self.url_appendix = "daily-stats"
 
