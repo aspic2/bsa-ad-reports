@@ -8,6 +8,8 @@ from os import getcwd
 import csv
 
 def first_party_reports():
+    # TODO: Create an Advertiser object to store advertiser name, google sheet urls
+    # TODO: retrieved data, and other resources
     advertiser = random.choice(list(bsa_api_keys.keys()))
     dates = Dates().set()
     data = DailyStatsApi(advertiser).set_dates(dates).get_json_response()
