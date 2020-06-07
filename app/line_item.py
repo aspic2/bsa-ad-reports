@@ -9,14 +9,30 @@ class LineItem(object):
         self.clicks = None
         self.daily_stats = daily_stats
 
+    def build(self):
+        self.set_name().total_impressions().total_clicks()
+        return self
+
     def total_impressions(self):
-        pass
+        self.impressions = sum(int(x.get("impressions")) for x in self.daily_stats)
+        return self
 
     def total_clicks(self):
-        pass
+        self.clicks = sum(int(x.get("clicks")) for x in self.daily_stats)
+        return self
 
     def set_name(self):
-        pass
+        self.name = self.daily_stats[0].get("lineitem_name")
+        return self
+
+    def get_name(self):
+        return self.name
+
+    def get_impressions(self):
+        return self.impressions
+
+    def get_clicks(self):
+        return self.clicks
 
 
 
