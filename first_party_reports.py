@@ -4,6 +4,8 @@ from app.bsa_api_connections import LineItemsApi, DailyStatsApi
 from app.dates import Dates
 from app.line_item import LineItem
 from app.advertiser import Advertiser
+from app.sheets import SheetsApi, SpreadsheetMetadata
+from app.credentials import Credentials
 import random
 from os import getcwd
 import csv
@@ -29,7 +31,13 @@ def first_party_reports():
             relevant_stats = [x for x in formatted_data if x.get("lineitem_name") == l]
             line_items.append(LineItem(relevant_stats).build())
         # TODO: Now what do you want to do with the relevant data?
-        print([line_item.get_name() for line_item in line_items])
+        spreadsheet_formatted_data = [[l.get_name(), l.get_impressions(), l.get_clicks()] for l in line_items]
+        spreadsheet_formatted_data[0] = ["name", "impressions", "clicks"]
+        print(spreadsheet_formatted_data)
+
+        metadata = {"id": advertiser.get_spreadsheet_id(), "range": advertiser.get_range()}
+        google_credentials = Credentials().get()
+        updated_spreadsheet = SheetsApi(google_credentials, SpreadsheetMetadata(metadata)).build_service().write_to_spreadsheet(spreadsheet_formatted_data)
 
         # with open(getcwd() + "/reports/month_to_date_data.csv", "w") as f:
         #     writer = csv.DictWriter(f, fieldnames=list(formatted_data[0].keys()), extrasaction='ignore')

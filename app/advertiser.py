@@ -22,6 +22,13 @@ class Advertiser(object):
     def get_name(self):
         return self.name
 
+    def get_spreadsheet_id(self):
+        return self.spreadsheet_id
+
+    def get_range(self):
+        # default to the entire tab
+        return self.tab_name + "!A1:Z"
+
 
 
 if __name__ == '__main__':
