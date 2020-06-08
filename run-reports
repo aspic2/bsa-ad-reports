@@ -4,5 +4,3 @@ CURRENTDATE=`date +"%Y-%m-%d %T"`
 source venv/bin/activate
 python main.py
 python first_party_reports.py
-
-echo "The shell script was successfully run at ${CURRENTDATE}" > shell-results.txt
