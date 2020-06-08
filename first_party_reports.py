@@ -17,7 +17,6 @@ def first_party_reports():
     print("Advertiser = {}".format(advertiser.get_name()))
     formatted_data = None
     if data:
-        print("data found.")
         line_items = []
         line_item_names = set(x.get("lineitem_name") for x in data)
         formatted_data = list({"lineitem_name": d.get("lineitem_name"),
@@ -30,7 +29,7 @@ def first_party_reports():
             relevant_stats = [x for x in formatted_data if x.get("lineitem_name") == l]
             line_items.append(LineItem(relevant_stats).build())
         # TODO: Now what do you want to do with the relevant data?
-
+        print([line_item.get_name() for line_item in line_items])
 
         # with open(getcwd() + "/reports/month_to_date_data.csv", "w") as f:
         #     writer = csv.DictWriter(f, fieldnames=list(formatted_data[0].keys()), extrasaction='ignore')
