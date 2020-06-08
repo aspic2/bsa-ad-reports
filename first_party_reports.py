@@ -1,8 +1,9 @@
-from resources.bsa_api_keys import bsa_api_keys
+from resources.advertisers_info import advertisers_info
 
 from app.bsa_api_connections import LineItemsApi, DailyStatsApi
 from app.dates import Dates
 from app.line_item import LineItem
+from app.advertiser import Advertiser
 import random
 from os import getcwd
 import csv
@@ -10,12 +11,13 @@ import csv
 def first_party_reports():
     # TODO: Create an Advertiser object to store advertiser name, google sheet urls
     # TODO: retrieved data, and other resources
-    advertiser = random.choice(list(bsa_api_keys.keys()))
+    advertiser = Advertiser(advertisers_info[0])
     dates = Dates().set()
     data = DailyStatsApi(advertiser).set_dates(dates).get_json_response()
-    print("Advertiser = {}".format(advertiser))
+    print("Advertiser = {}".format(advertiser.get_name()))
     formatted_data = None
     if data:
+        print("data found.")
         line_items = []
         line_item_names = set(x.get("lineitem_name") for x in data)
         formatted_data = list({"lineitem_name": d.get("lineitem_name"),

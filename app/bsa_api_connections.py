@@ -1,10 +1,10 @@
 import requests
-from resources.bsa_api_keys import bsa_api_keys
+
 
 class API(object):
     def __init__(self, advertiser):
-        self.advertiser = advertiser
-        self.credentials = bsa_api_keys.get(self.advertiser)
+        self.advertiser_name = advertiser.get_name()
+        self.credentials = advertiser.get_api_key()
         self.base_url = "https://papi.buysellads.com/"
         self.url = self.base_url
         self.url_appendix = ""
