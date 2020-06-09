@@ -25,7 +25,8 @@ class BsaData(object):
         return self
 
     def add_header_to_formatted_data(self):
-        self.formatted_data[0] = ["Name", "Impressions", "Clicks"]
+        header = ["Name", "Impressions", "Clicks"]
+        self.formatted_data.insert(0, header)
         return self
 
     def format_and_return_data(self):
