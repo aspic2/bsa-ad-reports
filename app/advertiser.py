@@ -26,8 +26,8 @@ class Advertiser(object):
         return self.spreadsheet_id
 
     def get_range(self):
-        # default to the entire tab
-        return self.tab_name + "!A1:Z"
+        # default to leaving column A open
+        return self.tab_name + "!B1:Z"
 
 
 
