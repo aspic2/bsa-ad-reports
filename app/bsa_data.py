@@ -21,11 +21,11 @@ class BsaData(object):
         return self
 
     def format_data(self):
-        self.formatted_data = list([li.get_name(), li.get_impressions(), li.get_clicks()] for li in self.line_items)
+        self.formatted_data = list([li.get_name(), li.get_impressions(), li.get_clicks(), li.start_of_data, li.end_of_data] for li in self.line_items)
         return self
 
     def add_header_to_formatted_data(self):
-        header = ["Name", "Impressions", "Clicks"]
+        header = ["Name", "Impressions", "Clicks", "Data From", "Data To"]
         self.formatted_data.insert(0, header)
         return self
 

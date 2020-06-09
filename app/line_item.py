@@ -8,9 +8,11 @@ class LineItem(object):
         self.impressions = None
         self.clicks = None
         self.daily_stats = daily_stats
+        self.start_of_data = None
+        self.end_of_data = None
 
     def build(self):
-        self.set_name().total_impressions().total_clicks()
+        self.set_name().total_impressions().total_clicks().set_dates()
         return self
 
     def total_impressions(self):
@@ -33,6 +35,13 @@ class LineItem(object):
 
     def get_clicks(self):
         return self.clicks
+
+    def set_dates(self):
+        dates = list(x.get("date") for x in self.daily_stats)
+        # Relies on dates arriving in YYYY-MM-DD format and sorting alphabetically
+        self.start_of_data = min(dates)
+        self.end_of_data = max(dates)
+        return self
 
 
 
