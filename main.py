@@ -1,6 +1,5 @@
 import requests
 
-from resources.bsa_api_keys import bsa_api_keys
 from app.credentials import Credentials
 from app.gmail import GmailApi
 from app.sheets import SheetsApi, SpreadsheetMetadata
