@@ -4,7 +4,10 @@ token.pickle
 resources/sample*
 
 # Intermediary files
-reports/
+reports/downloaded.zip
+reports/month_to_date_data.csv
+reports/read_zip_data.csv
+reports/report.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
