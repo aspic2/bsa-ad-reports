@@ -24,10 +24,16 @@ class GmailApi(object):
 
     def get_latest_message_attachment(self):
         message = self.get_latest_message()
-        attachment_id = message.get('payload').get('body').get('attachmentId')
-        if attachment_id:
-            attachment = message.attachments.get(attachment_id)
-            return attachment
+        attachments = list(x for x in message.get('payload').get('parts') if x.get('filename'))
+        if not attachments:
+            return None
+        print("Number of attachments = {}".format(len(attachments)))
+        #default to first attachment
+        attachment_id = attachments[0].get('body').get('attachmentId')
+        attachment = self.service.users().messages().attachments().get(userId='me', messageId=message.get('id'), id=attachment_id).execute().get('data')
+        # attachemnt needs to be decoded to be written as a useful .zip file
+        attachment = base64.urlsafe_b64decode(attachment.encode('UTF-8'))
+        return attachment
 
 
 class GmailApiService(object):
