@@ -1,15 +1,15 @@
 import requests
 
 from app.credentials import Credentials
-from app.gmail import GmailApi
+from app.gmail import GmailApi, GmailApiService
 from app.sheets import SheetsApi, SpreadsheetMetadata
 from app.reader import Reader, FileManager, ZipFileManager
 
 
 def main():
     credentials = Credentials().get()
-
-    email_body = GmailApi(credentials).build_service().get_latest_message_body()
+    gmail_service = GmailApiService(credentials).get()
+    email_body = GmailApi(gmail_service).get_latest_message_body()
     download_link = Reader(email_body).get_download_link()
 
     download_response = requests.get(download_link)
