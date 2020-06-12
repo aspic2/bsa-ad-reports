@@ -12,19 +12,22 @@ from app.advertiser import Advertiser
 def main():
     credentials = Credentials().get()
     gmail_service = GmailApiService(credentials).get()
-    advertiser = Advertiser(advertisers_info[3])
-
-    reporting_data = get_reporting_data(gmail_service, advertiser)
-    formatted_reporting_data = process_reporting_data(reporting_data)
-    updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
-    print("updated reporting for {}".format(advertiser.get_name()))
+    advertisers = list(Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name"))
+    for advertiser in advertisers:
+        reporting_data = get_reporting_data(gmail_service, advertiser)
+        formatted_reporting_data = process_reporting_data(reporting_data)
+        updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
+        print("updated reporting for {}".format(advertiser.get_name()))
 
 
 def get_reporting_data(gmail_service, advertiser):
-    email_body = GmailApi(gmail_service, advertiser.get_email_subject()).get_latest_message_body()
-    download_link = Reader(email_body).get_download_link()
-    download_response = requests.get(download_link).content
-    return download_response
+    api = GmailApi(gmail_service, advertiser.get_email_subject())
+    if advertiser.get_download_link():
+        email_body = api.get_latest_message_body()
+        download_link = Reader(email_body).get_download_link(advertiser.get_download_link())
+        return requests.get(download_link).content
+    reporting = api.get_latest_message_attachment()
+    return reporting
 
 
 def process_reporting_data(data):
