@@ -47,8 +47,8 @@ class FileManager(object):
 
 class ZipFileManager(FileManager):
 
-    def __init__(self, filename=None):
-        FileManager.__init__(self, filename=filename, write_mode='wb+')
+    def __init__(self, filename=None, write_mode='wb+'):
+        FileManager.__init__(self, filename=filename, write_mode=write_mode)
 
     def read_first_file(self):
         first_file = None
