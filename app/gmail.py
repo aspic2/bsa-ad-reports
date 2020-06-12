@@ -2,16 +2,17 @@ from googleapiclient.discovery import build
 
 class GmailApi(object):
 
-    def __init__(self, service):
+    def __init__(self, service, query):
         self.service = service
+        self.query = query
 
-    def get_lastest_thread(self, query):
-        gmail_response = self.service.users().threads().list(userId='me', q=query).execute()
+    def get_lastest_thread(self):
+        gmail_response = self.service.users().threads().list(userId='me', q=self.query).execute()
         latest_thread = gmail_response.get('threads')[0]
         return latest_thread
 
     def get_latest_message(self):
-        latest_thread = self.get_lastest_thread("label:reports subject:Adobe_BSA ")
+        latest_thread = self.get_lastest_thread()
         message = self.service.users().messages().get(userId='me', id=latest_thread.get('id')).execute()
         return message
 
