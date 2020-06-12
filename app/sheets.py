@@ -34,9 +34,9 @@ class SheetsApi(object):
 
 class SpreadsheetMetadata(object):
 
-    def __init__(self, md={"id": "1HCuPDapimvZNf3W9uBQOJJuHGQ_xLxFwakBlDvYv6bc", "range": "import_flashtalking!A1:Z"}):
-        self.id = md.get("id")
-        self.range = md.get("range")
+    def __init__(self, metadata):
+        self.id = metadata.get("id")
+        self.range = metadata.get("range")
 
     def get_id(self):
         return self.id
