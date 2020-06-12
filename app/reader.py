@@ -20,11 +20,10 @@ class Reader(object):
         lines = self.content.split(split_by)
         return lines
 
-    def get_download_link(self):
+    def get_download_link(self, link_identifier):
         self.decode_content()
         content_list = self.return_content_as_list('\r\n')
-        # TODO:  move this URL to a central location
-        return [line for line in content_list if "https://download.flashtalking.com" in line][0]
+        return [line for line in content_list if link_identifier in line][0]
 
     def return_content_as_stripped_string(self, stripped_character='"'):
         self.content = str(self.content, 'utf-8').replace(stripped_character, '')
