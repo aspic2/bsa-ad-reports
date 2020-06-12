@@ -33,6 +33,12 @@ class Advertiser(object):
         # default to leaving column A open
         return self.tab_name + range
 
+    def get_third_party_range(self, range="!A1:Z"):
+        return self.third_party_tab_name + range
+
+    def get_email_subject(self):
+        return self.email_subject
+
 
 
 if __name__ == '__main__':
