@@ -1,5 +1,3 @@
-from resources.advertisers_info import advertisers_info
-
 class Advertiser(object):
 
     def __init__(self, info):
