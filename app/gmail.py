@@ -1,4 +1,5 @@
 from googleapiclient.discovery import build
+import base64
 
 class GmailApi(object):
 
