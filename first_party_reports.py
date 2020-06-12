@@ -9,7 +9,7 @@ from app.bsa_data import BsaData
 
 def main():
     google_credentials = Credentials().get()
-    advertisers = [Advertiser(a) for a in advertisers_info]
+    advertisers = [Advertiser(a) for a in advertisers_info if a.get("api_key")]
     for advertiser in advertisers:
         formatted_data = get_first_party_reports_for(advertiser)
         if not formatted_data:
