@@ -11,6 +11,7 @@ class Advertiser(object):
         self.third_party_tab_name = info.get("third_party_tab_name")
         self.email_subject = info.get("email_subject")
         self.email_attachment_name = info.get("email_attachment_name")
+        self.download_link = info.get("download_link")
         self.stats = None
 
     def set_stats(self):
@@ -39,6 +40,8 @@ class Advertiser(object):
     def get_email_subject(self):
         return self.email_subject
 
+    def get_download_link(self):
+        return self.download_link
 
 
 if __name__ == '__main__':
