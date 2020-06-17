@@ -14,10 +14,10 @@ def main():
     gmail_service = GmailApiService(credentials).get()
     advertisers = list(Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name"))
     for advertiser in advertisers:
+        print("Advertiser = {}".format(advertiser.get_name()))
         reporting_data = get_reporting_data(gmail_service, advertiser)
         formatted_reporting_data = process_reporting_data(reporting_data)
         updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
-        print("updated reporting for {}".format(advertiser.get_name()))
 
 
 def get_reporting_data(gmail_service, advertiser):

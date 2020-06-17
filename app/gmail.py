@@ -1,5 +1,6 @@
 from googleapiclient.discovery import build
 import base64
+from datetime import date
 
 class GmailApi(object):
 
@@ -15,6 +16,9 @@ class GmailApi(object):
     def get_latest_message(self):
         latest_thread = self.get_lastest_thread()
         message = self.service.users().messages().get(userId='me', id=latest_thread.get('id')).execute()
+        # must convert .get("internalDate") from ms to s
+        latest_message_date = date.fromtimestamp(int(message.get("internalDate"))/1000)
+        print("Latest message from {}".format(latest_message_date))
         return message
 
     def get_latest_message_body(self):
