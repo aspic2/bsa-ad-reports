@@ -23,7 +23,6 @@ class GmailApi(object):
 
     def get_latest_message_body(self):
         message = self.get_latest_message()
-        # return body of email only
         body = message.get('payload').get('body').get('data')
         return body
 
