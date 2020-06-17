@@ -12,7 +12,7 @@ from app.advertiser import Advertiser
 def main():
     credentials = Credentials().get()
     gmail_service = GmailApiService(credentials).get()
-    advertisers = list(Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name"))
+    advertisers = [Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name")]
     for advertiser in advertisers:
         print("Advertiser = {}".format(advertiser.get_name()))
         reporting_data = get_reporting_data(gmail_service, advertiser)
