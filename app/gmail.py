@@ -37,7 +37,7 @@ class GmailApi(object):
         #default to first attachment
         attachment_id = attachments[0].get('body').get('attachmentId')
         attachment = self.service.users().messages().attachments().get(userId='me', messageId=message.get('id'), id=attachment_id).execute().get('data')
-        # attachemnt needs to be decoded to be written as a useful .zip file
+        # attachment needs to be decoded to be written as a useful .zip file
         attachment = base64.urlsafe_b64decode(attachment.encode('UTF-8'))
         return attachment
 
