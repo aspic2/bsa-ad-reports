@@ -10,12 +10,14 @@ class GmailApi(object):
 
     def get_lastest_thread(self):
         gmail_response = self.service.users().threads().list(userId='me', q=self.query).execute()
-        latest_thread = gmail_response.get('threads')[0]
+        latest_thread_id = gmail_response.get('threads')[0].get('id')
+        latest_thread = self.service.users().threads().get(userId='me', id=latest_thread_id).execute()
         return latest_thread
 
     def get_latest_message(self):
         latest_thread = self.get_lastest_thread()
-        message = self.service.users().messages().get(userId='me', id=latest_thread.get('id')).execute()
+        # contrary to threads.list, messages in a thread are sorted oldest to newest
+        message = latest_thread.get('messages')[-1]
         # must convert .get("internalDate") from ms to s
         latest_message_date = date.fromtimestamp(int(message.get("internalDate"))/1000)
         print("Latest message from {}".format(latest_message_date))
