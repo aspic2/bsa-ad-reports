@@ -13,13 +13,15 @@ from app.advertiser import Advertiser
 def main():
     credentials = Credentials().get()
     gmail_service = GmailApiService(credentials).get()
-    advertisers = [Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name")]
+    # TODO: REACTIVATE THIS CODE TO RUN SCRIPT FOR ALL ADVERTISERS: # advertisers = [Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name")]
+    advertisers = [Advertiser(a) for a in advertisers_info if a.get("name") == "PHD NY - Mailchimp"]
     for advertiser in advertisers:
         print("Advertiser = {}".format(advertiser.get_name()))
         try:
             reporting_data = get_reporting_data(gmail_service, advertiser)
-            formatted_reporting_data = process_reporting_data(reporting_data)
-            updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
+            # TODO: REACTIVATE THIS CODE WHEN YOU ARE DONE EDITING
+            # formatted_reporting_data = process_reporting_data(reporting_data)
+            # updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
         except Exception as e:
             print(traceback.print_tb(sys.exc_info()[2]))
 
