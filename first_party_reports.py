@@ -1,4 +1,3 @@
-from resources.advertisers_info import advertisers_info
 from resources.confidential import campaigns_list_hash
 
 from app.bsa_api_connections import DailyStatsApi
@@ -13,8 +12,6 @@ def main():
     google_credentials = Credentials().get()
     advertisers_info_list = create_advertisers_info_list()
     advertisers = [Advertiser(a) for a in advertisers_info_list if a.get("api_key")]
-    # OLD CODE
-    #advertisers = [Advertiser(a) for a in advertisers_info if a.get("api_key")]
     for advertiser in advertisers:
         formatted_data = get_first_party_reports_for(advertiser)
         if not formatted_data:
