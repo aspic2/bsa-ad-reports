@@ -2,18 +2,23 @@ import requests
 import sys, traceback
 
 from resources.advertisers_info import advertisers_info
+from resources.confidential import campaigns_list_hash
 
 from app.credentials import Credentials
 from app.gmail import GmailApi, GmailApiService
 from app.sheets import SheetsApi, SpreadsheetMetadata
 from app.reader import Reader, FileManager, ZipFileManager
 from app.advertiser import Advertiser
+from app.helper import Helper
 
 
 def main():
     credentials = Credentials().get()
     gmail_service = GmailApiService(credentials).get()
-    advertisers = [Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name")]
+    advertisers_info_list = create_advertisers_info_list()
+    advertisers = [Advertiser(a) for a in advertisers_info_list if a.get("third_party_tab_name")]
+    # OLD CODE
+    # advertisers = [Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name")]
     for advertiser in advertisers:
         print("Advertiser = {}".format(advertiser.get_name()))
         try:
@@ -46,6 +51,13 @@ def process_reporting_data(data):
 def write_data_to_spreadsheet(credentials, advertiser, formatted_data):
     updated_spreadsheet = SheetsApi(credentials, SpreadsheetMetadata({"id": advertiser.get_spreadsheet_id(), "range": advertiser.get_third_party_range(),  })).build_service().write_to_spreadsheet(formatted_data)
     return updated_spreadsheet
+
+
+def create_advertisers_info_list():
+    metadata = SpreadsheetMetadata(campaigns_list_hash)
+    sheets_api = SheetsApi(Credentials().get(), metadata).build_service()
+    sheet_values = sheets_api.get_data()
+    return Helper.create_advertisers_info_list(sheet_values)
 
 
 if __name__ == '__main__':

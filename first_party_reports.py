@@ -1,4 +1,5 @@
 from resources.advertisers_info import advertisers_info
+from resources.confidential import campaigns_list_hash
 
 from app.bsa_api_connections import DailyStatsApi
 from app.dates import Dates
@@ -6,10 +7,14 @@ from app.advertiser import Advertiser
 from app.sheets import SheetsApi, SpreadsheetMetadata
 from app.credentials import Credentials
 from app.bsa_data import BsaData
+from app.helper import Helper
 
 def main():
     google_credentials = Credentials().get()
-    advertisers = [Advertiser(a) for a in advertisers_info if a.get("api_key")]
+    advertisers_info_list = create_advertisers_info_list()
+    advertisers = [Advertiser(a) for a in advertisers_info_list if a.get("api_key")]
+    # OLD CODE
+    #advertisers = [Advertiser(a) for a in advertisers_info if a.get("api_key")]
     for advertiser in advertisers:
         formatted_data = get_first_party_reports_for(advertiser)
         if not formatted_data:
@@ -34,6 +39,12 @@ def get_first_party_reports_for(advertiser):
                 ))
         return None
 
+
+def create_advertisers_info_list():
+    metadata = SpreadsheetMetadata(campaigns_list_hash)
+    sheets_api = SheetsApi(Credentials().get(), metadata).build_service()
+    sheet_values = sheets_api.get_data()
+    return Helper.create_advertisers_info_list(sheet_values)
 
 
 
