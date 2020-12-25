@@ -1,7 +1,6 @@
 import requests
 import sys, traceback
 
-from resources.advertisers_info import advertisers_info
 from resources.confidential import campaigns_list_hash
 
 from app.credentials import Credentials
@@ -17,8 +16,6 @@ def main():
     gmail_service = GmailApiService(credentials).get()
     advertisers_info_list = create_advertisers_info_list()
     advertisers = [Advertiser(a) for a in advertisers_info_list if a.get("third_party_tab_name")]
-    # OLD CODE
-    # advertisers = [Advertiser(a) for a in advertisers_info if a.get("third_party_tab_name")]
     for advertiser in advertisers:
         print("Advertiser = {}".format(advertiser.get_name()))
         try:
