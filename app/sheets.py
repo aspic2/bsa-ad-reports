@@ -1,5 +1,8 @@
 from googleapiclient.discovery import build
 
+from resources.confidential import campaigns_list_hash
+
+
 class SheetsApi(object):
 
     def __init__(self, credentials, metadata):
@@ -30,6 +33,11 @@ class SheetsApi(object):
         }
         self.service.spreadsheets().values().update(spreadsheetId=self.metadata.get_id(), range=self.metadata.get_range(), valueInputOption='USER_ENTERED', body=value_range_body).execute()
         return self
+
+    def get_data(self):
+        # TODO: Get this code working
+        response = self.service.spreadsheets().values().get(spreadsheetId=self.metadata.id, range=self.metadata.range).execute()
+        return response.get('values', [])
 
 
 class SpreadsheetMetadata(object):
