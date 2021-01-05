@@ -1,5 +1,6 @@
 import requests
 import sys, traceback
+import zipfile
 
 from resources.confidential import campaigns_list_hash
 
@@ -39,8 +40,12 @@ def get_reporting_data(gmail_service, advertiser):
 
 
 def process_reporting_data(data):
-    zip_file = ZipFileManager("downloaded.zip").write_content(data)
-    report_csv = zip_file.read_first_file().return_content_as_stripped_string()
+    # quick way to handle both .zip and .csv
+    try:
+        zip_file = ZipFileManager("downloaded.zip").write_content(data)
+        report_csv = zip_file.read_first_file().return_content_as_stripped_string()
+    except zipfile.BadZipFile as e:
+        report_csv = Reader(data).return_content_as_stripped_string()
     report_csv_file = FileManager("report.csv").write_content(report_csv)
     formatted_reporting_data = [data.split(',') for data in Reader(report_csv).return_content_as_list()]
     return formatted_reporting_data
