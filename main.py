@@ -22,7 +22,6 @@ def main():
         try:
             reporting_data = get_reporting_data(gmail_service, advertiser)
             # TODO: Interpret file type before processing
-            print(type(reporting_data))
             formatted_reporting_data = process_reporting_data(reporting_data)
             updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
         except Exception as e:
