@@ -44,7 +44,7 @@ def process_reporting_data(data):
         zip_file = ZipFileManager("downloaded.zip").write_content(data)
         report_csv = zip_file.read_first_file().return_content_as_stripped_string()
     except zipfile.BadZipFile as e:
-        report_csv = Reader(data).return_content_as_stripped_string()
+        report_csv = Reader(data).return_content_as_stripped_string_with_commas_within_quotes_removed()
     report_csv_file = FileManager("report.csv").write_content(report_csv)
     formatted_reporting_data = [data.split(',') for data in Reader(report_csv).return_content_as_list()]
     return formatted_reporting_data

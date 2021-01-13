@@ -1,6 +1,7 @@
 import base64
 from os import getcwd
 from zipfile import ZipFile
+import re
 
 
 class Reader(object):
@@ -25,9 +26,25 @@ class Reader(object):
         content_list = self.return_content_as_list('\r\n')
         return [line for line in content_list if link_identifier in line][0]
 
+    def return_content_as_string(self):
+        return str(self.content, 'utf-8')
+
     def return_content_as_stripped_string(self, stripped_character='"'):
-        self.content = str(self.content, 'utf-8').replace(stripped_character, '')
+        # TODO: consolidate this method with return_content_as_stripped_string_with_commas_within_quotes_removed()
+        content_as_string = self.return_content_as_string()
+        self.content = content_as_string.replace(stripped_character, '')
         return self.content
+
+    def return_content_with_commas_within_quotes_removed(self):
+        # Solves parsing error for csv files with numbers with thousands separators
+        content_as_string = self.return_content_as_string()
+        # https://stackoverflow.com/questions/38336518/remove-all-commas-between-quotes
+        self.content = re.sub(r'(?!(([^"]*"){2})*[^"]*$),', '', content_as_string)
+        return self.content
+
+    def return_content_as_stripped_string_with_commas_within_quotes_removed(self):
+        self.return_content_with_commas_within_quotes_removed()
+        return self.content.replace('"', '')
 
 
 class FileManager(object):
