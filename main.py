@@ -1,6 +1,7 @@
 import requests
 import sys, traceback
 import zipfile
+from time import sleep
 
 from resources.confidential import campaigns_list_hash
 
