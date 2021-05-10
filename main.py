@@ -26,6 +26,8 @@ def main():
             updated_spreadsheet = write_data_to_spreadsheet(credentials, advertiser, formatted_reporting_data)
         except Exception as e:
             print(traceback.print_tb(sys.exc_info()[2]))
+        finally:
+            sleep(10)
 
 
 def get_reporting_data(gmail_service, advertiser):
