@@ -24,6 +24,11 @@ class Dates(object):
         self.set_start_date()
         return self
 
+    def set_dates_to_current_year(self):
+        self.start_date = date(self.today.year, 1, 1)
+        self.end_date = date(self.today.year, 12, 31)
+        return self
+
     def set_start_date(self):
         # default to first of month
         self.start_date = self.end_date.replace(day=1)
