@@ -23,9 +23,15 @@ def main():
 
 
 def get_first_party_reports_for(advertiser):
-    dates = Dates().set()
-    data = DailyStatsApi(advertiser).set_dates(dates).get_json_response()
     print("Advertiser = {}".format(advertiser.get_name()))
+    dates = Dates().set()
+
+    #for shutterstock
+    if advertiser.get_name().lower() == "shutterstock":
+        dates = Dates().set_dates_to_current_year()
+
+    data = DailyStatsApi(advertiser).set_dates(dates).get_json_response()
+
     if data:
         print("data found")
         formatted_data = BsaData(data).format_and_return_data()
